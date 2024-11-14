@@ -3,3 +3,4 @@ pytest
 scikit-learn
 requests
 numpy
+flask_cors
