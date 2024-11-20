@@ -14,12 +14,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-   - name: Set up JDK (for JMeter)
-  uses: actions/setup-java@v2
-  with:
-    java-version: '11'  # Use Java 11 or higher
-    distribution: 'adoptopenjdk'  # You can also use 'zulu' or 'openjdk' as alternatives
-
+    - name: Set up JDK (for JMeter)
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'  # Use Java 11 or higher
+        distribution: 'adoptopenjdk'  # You can also use 'zulu' or 'openjdk' as alternatives
 
     - name: Create report directories
       run: |
