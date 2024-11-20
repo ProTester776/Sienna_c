@@ -31,7 +31,7 @@ jobs:
         python compare_results.py
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: performance-test-results
         path: ./reports/
