@@ -29,14 +29,20 @@ jobs:
         tar -xvzf apache-jmeter-5.6.3.tgz -C /home/runner/
         mv /home/runner/apache-jmeter-5.6.3 /home/runner/jmeter
 
-    # Step 4: Install JMeter Plugins
+    # Step 4: Download cmdrunner-2.3.jar
+    - name: Download cmdrunner-2.3.jar
+      run: |
+        wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar -O /home/runner/jmeter/lib/cmdrunner-2.3.jar
+
+    # Step 5: Install JMeter Plugins
     - name: Install JMeter Plugins
       run: |
         wget https://jmeter-plugins.org/get/ -O /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar
+        chmod +x /home/runner/jmeter/bin/PluginsManagerCMD.sh
         java -cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
-        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard  # Install the required plugins
+        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard
 
-    # Step 5: Verify JMeter Installation and Plugins
+    # Step 6: Verify JMeter Installation and Plugins
     - name: Verify JMeter Installation and Plugins
       run: |
         echo "Listing contents of /home/runner/jmeter/bin"
@@ -44,13 +50,13 @@ jobs:
         echo "Listing contents of /home/runner/jmeter/lib/ext"
         ls -l /home/runner/jmeter/lib/ext
 
-    # Step 6: Create report directories
+    # Step 7: Create report directories
     - name: Create report directories
       run: |
         mkdir -p ./reports/dashboard
         chmod -R 777 ./reports
 
-    # Step 7: Run JMeter Performance Test
+    # Step 8: Run JMeter Performance Test
     - name: Run JMeter Performance Test
       run: |
         /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
