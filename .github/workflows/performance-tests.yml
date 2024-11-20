@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '11'
-        distribution: 'zulu'  # Use Zulu OpenJDK distribution
+        distribution: 'zulu'
 
     # Step 3: Install and extract JMeter
     - name: Install JMeter
@@ -39,8 +39,8 @@ jobs:
       run: |
         wget https://jmeter-plugins.org/get/ -O /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar
         java -cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
-        # Generate the PluginsManagerCMD.sh script after installation
-        cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar /home/runner/jmeter/lib/ext/jmeter-plugins-manager-generated.jar
+        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard
+        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-casutg  # Install Throughput Shaping Timer
 
     # Step 6: Verify JMeter Installation and Plugins
     - name: Verify JMeter Installation and Plugins
