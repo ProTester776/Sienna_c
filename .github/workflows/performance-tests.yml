@@ -1,37 +1,29 @@
-name: Run Performance Tests
+name: Performance Test Workflow
 
 on:
   push:
     branches:
-      - main  # Change this if your default branch is different
-  pull_request:
-    branches:
       - main
+  pull_request:
 
 jobs:
-  test:
+  performance-test:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JMeter
-      run: |
-        wget -qO- https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.zip -O jmeter.zip
-        unzip jmeter.zip
-        export JMETER_HOME=$PWD/apache-jmeter-5.6.3
-
-    - name: Run Performance Tests with JMeter
-      run: |
-        $PWD/apache-jmeter-5.6.3/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
-
-    - name: Run Python Result Comparison Script
-      run: |
-        python compare_results.py
-
-    - name: Upload Test Results
-      uses: actions/upload-artifact@v3
+    - name: Set up JDK (for JMeter)
+      uses: actions/setup-java@v2
       with:
-        name: performance-test-results
-        path: ./reports/
+        java-version: '11'  # JMeter requires Java 11 or newer
+
+    - name: Create report directories
+      run: |
+        mkdir -p ./reports/dashboard
+        chmod -R 777 ./reports
+
+    - name: Run JMeter Performance Test
+      run: |
+        ./apache-jmeter-5.6.3/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
