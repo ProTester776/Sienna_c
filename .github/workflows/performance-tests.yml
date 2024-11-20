@@ -35,11 +35,11 @@ jobs:
         ls -l  # List the extracted files in the current directory
         
         # Move JMeter to the correct directory
-        mv apache-jmeter-5.6.3 /home/runner/jmeter
+        mv apache-jmeter-5.6.3 /home/runner/jmeter/apache-jmeter-5.6.3
 
     - name: List extracted JMeter folder contents
       run: |
-        ls -l /home/runner/jmeter  # Check if the JMeter folder exists
+        ls -l /home/runner/jmeter/apache-jmeter-5.6.3  # Check if the JMeter folder exists
         
     - name: List contents of JMeter bin directory
       run: |
