@@ -38,9 +38,9 @@ jobs:
     - name: Install JMeter Plugins
       run: |
         wget https://jmeter-plugins.org/get/ -O /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar
-        chmod +x /home/runner/jmeter/bin/PluginsManagerCMD.sh
         java -cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
-        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard
+        # Generate the PluginsManagerCMD.sh script after installation
+        cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar /home/runner/jmeter/lib/ext/jmeter-plugins-manager-generated.jar
 
     # Step 6: Verify JMeter Installation and Plugins
     - name: Verify JMeter Installation and Plugins
