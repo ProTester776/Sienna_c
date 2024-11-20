@@ -26,11 +26,14 @@ jobs:
         wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
         tar -xvzf apache-jmeter-5.6.3.tgz
         mv apache-jmeter-5.6.3 /home/runner/jmeter
-        
-    - name: Check JMeter directory
+
+    - name: List extracted JMeter folder contents
       run: |
-        ls -l /home/runner/jmeter
-        ls -l /home/runner/jmeter/apache-jmeter-5.6.3/bin
+        ls -l /home/runner/jmeter  # Check if the JMeter folder exists
+
+    - name: List contents of JMeter bin directory
+      run: |
+        ls -l /home/runner/jmeter/apache-jmeter-5.6.3/bin  # Check if the 'jmeter' executable is present
 
     - name: Create report directories
       run: |
