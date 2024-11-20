@@ -63,6 +63,7 @@ jobs:
         mkdir -p ./reports/dashboard
         chmod -R 777 ./reports
 
-    - name: Run JMeter Performance Test
-      run: |
-        /home/runner/jmeter/apache-jmeter-5.6.3/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
+   - name: Run JMeter Performance Test
+  run: |
+    # Adjust path to match the correct directory structure
+    /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
