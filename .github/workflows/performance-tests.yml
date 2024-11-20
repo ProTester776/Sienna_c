@@ -25,25 +25,38 @@ jobs:
         # Download JMeter
         wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
         
-        # Verify that the file is downloaded
-        ls -l apache-jmeter-5.6.3.tgz  # List the downloaded .tgz file
-        
-        # Extract the JMeter package
+        # Verify download success
+        if [ ! -f apache-jmeter-5.6.3.tgz ]; then
+          echo "JMeter tarball download failed"
+          exit 1
+        fi
+
+        echo "Download Successful. Now Extracting..."
+
+        # Extract JMeter
         tar -xvzf apache-jmeter-5.6.3.tgz
         
-        # Verify extraction by listing the extracted files
-        ls -l  # List the extracted files in the current directory
+        # Verify extraction success
+        if [ ! -d apache-jmeter-5.6.3 ]; then
+          echo "JMeter extraction failed"
+          exit 1
+        fi
         
-        # Move JMeter to the correct directory
+        echo "JMeter extracted successfully. Listing extracted files..."
+        ls -l apache-jmeter-5.6.3  # Show the extracted files to ensure it's correct
+
+        # Move JMeter to the expected directory
         mv apache-jmeter-5.6.3 /home/runner/jmeter
 
     - name: List extracted JMeter folder contents
       run: |
-        ls -l /home/runner/jmeter  # Check if the JMeter folder exists
-        
+        echo "Listing contents of /home/runner/jmeter"
+        ls -l /home/runner/jmeter
+
     - name: List contents of JMeter bin directory
       run: |
-        ls -l /home/runner/jmeter/apache-jmeter-5.6.3/bin  # Check if the 'jmeter' executable is present
+        echo "Listing contents of JMeter bin directory"
+        ls -l /home/runner/jmeter/apache-jmeter-5.6.3/bin  # This should show the 'jmeter' executable
 
     - name: Create report directories
       run: |
