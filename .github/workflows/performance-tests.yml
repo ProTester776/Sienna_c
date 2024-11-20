@@ -50,13 +50,21 @@ jobs:
         echo "Listing contents of /home/runner/jmeter/lib/ext"
         ls -l /home/runner/jmeter/lib/ext
 
-    # Step 7: Create report directories
+    # Step 7: Verify Test Scripts
+    - name: Verify test scripts
+      run: |
+        echo "Listing contents of test-scripts directory:"
+        ls -l ./test-scripts
+
+    # Step 8: Create report directories
     - name: Create report directories
       run: |
         mkdir -p ./reports/dashboard
         chmod -R 777 ./reports
 
-    # Step 8: Run JMeter Performance Test
+    # Step 9: Run JMeter Performance Test
     - name: Run JMeter Performance Test
       run: |
-        /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
+        /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard -j jmeter.log
+        echo "JMeter Logs:"
+        cat jmeter.log
