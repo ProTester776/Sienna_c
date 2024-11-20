@@ -71,3 +71,10 @@ jobs:
           -n -t ./test-scripts/sienna_bot.jmx \
           -l ./reports/results.jtl \
           -e -o ./reports/dashboard
+
+    # Step 10: Upload the JMeter results and dashboard as artifacts
+    - name: Upload JMeter results and dashboard
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-reports
+        path: ./reports/
