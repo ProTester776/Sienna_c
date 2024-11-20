@@ -40,7 +40,7 @@ jobs:
         wget https://jmeter-plugins.org/get/ -O /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar
         java -cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
         /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard
-        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-casutg  # Install Throughput Shaping Timer
+        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-casutg
 
     # Step 6: Verify JMeter Installation and Plugins
     - name: Verify JMeter Installation and Plugins
@@ -50,11 +50,13 @@ jobs:
         echo "Listing contents of /home/runner/jmeter/lib/ext"
         ls -l /home/runner/jmeter/lib/ext
 
-    # Step 7: Verify Test Scripts
-    - name: Verify test scripts
+    # Step 7: Ensure config.jmx exists in the correct directory
+    - name: Verify config.jmx file
       run: |
-        echo "Listing contents of test-scripts directory:"
+        echo "Verifying test-scripts directory"
         ls -l ./test-scripts
+        echo "Confirming config.jmx file presence"
+        cat ./test-scripts/config.jmx
 
     # Step 8: Create report directories
     - name: Create report directories
@@ -65,6 +67,7 @@ jobs:
     # Step 9: Run JMeter Performance Test
     - name: Run JMeter Performance Test
       run: |
-        /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard -j jmeter.log
-        echo "JMeter Logs:"
-        cat jmeter.log
+        /home/runner/jmeter/bin/jmeter \
+          -n -t ./test-scripts/sienna_bot.jmx \
+          -l ./reports/results.jtl \
+          -e -o ./reports/dashboard
