@@ -29,21 +29,28 @@ jobs:
         tar -xvzf apache-jmeter-5.6.3.tgz -C /home/runner/
         mv /home/runner/apache-jmeter-5.6.3 /home/runner/jmeter
 
-    # Step 4: Verify JMeter installation
-    - name: Verify JMeter Installation
+    # Step 4: Install JMeter Plugins
+    - name: Install JMeter Plugins
       run: |
-        echo "Listing contents of /home/runner/jmeter"
-        ls -l /home/runner/jmeter
-        echo "Listing contents of JMeter bin directory"
-        ls -l /home/runner/jmeter/bin
+        wget https://jmeter-plugins.org/get/ -O /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar
+        java -cp /home/runner/jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+        /home/runner/jmeter/bin/PluginsManagerCMD.sh install jpgc-standard  # Install the required plugins
 
-    # Step 5: Create report directories
+    # Step 5: Verify JMeter Installation and Plugins
+    - name: Verify JMeter Installation and Plugins
+      run: |
+        echo "Listing contents of /home/runner/jmeter/bin"
+        ls -l /home/runner/jmeter/bin
+        echo "Listing contents of /home/runner/jmeter/lib/ext"
+        ls -l /home/runner/jmeter/lib/ext
+
+    # Step 6: Create report directories
     - name: Create report directories
       run: |
         mkdir -p ./reports/dashboard
         chmod -R 777 ./reports
 
-    # Step 6: Run JMeter Performance Test
+    # Step 7: Run JMeter Performance Test
     - name: Run JMeter Performance Test
       run: |
         /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
