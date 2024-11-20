@@ -17,18 +17,33 @@ jobs:
     - name: Set up JDK (for JMeter)
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
-        distribution: 'zulu'
+        java-version: '11'  # Use Java 11 or higher
+        distribution: 'zulu'  # Use Zulu for OpenJDK distribution
 
     - name: Install JMeter
       run: |
+        # Download JMeter
         wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
+        
+        # Verify that the file is downloaded
+        ls -l apache-jmeter-5.6.3.tgz  # List the downloaded .tgz file
+        
+        # Extract the JMeter package
         tar -xvzf apache-jmeter-5.6.3.tgz
+        
+        # Verify extraction by listing the extracted files
+        ls -l  # List the extracted files in the current directory
+        
+        # Move JMeter to the correct directory
         mv apache-jmeter-5.6.3 /home/runner/jmeter
 
-    - name: List JMeter directory contents
+    - name: List extracted JMeter folder contents
       run: |
-        ls -R /home/runner/jmeter
+        ls -l /home/runner/jmeter  # Check if the JMeter folder exists
+        
+    - name: List contents of JMeter bin directory
+      run: |
+        ls -l /home/runner/jmeter/apache-jmeter-5.6.3/bin  # Check if the 'jmeter' executable is present
 
     - name: Create report directories
       run: |
@@ -37,12 +52,4 @@ jobs:
 
     - name: Run JMeter Performance Test
       run: |
-        /home/runner/jmeter/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
-
-    - name: Archive test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: jmeter-results
-        path: |
-          ./reports/results.jtl
-          ./reports/dashboard
+        /home/runner/jmeter/apache-jmeter-5.6.3/bin/jmeter -n -t ./test-scripts/sienna_bot.jmx -l ./reports/results.jtl -e -o ./reports/dashboard
